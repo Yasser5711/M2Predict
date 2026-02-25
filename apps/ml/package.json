@@ -1,0 +1,7 @@
+{
+	"name": "ml",
+	"private": true,
+	"scripts": {
+		"dev": ".venv\\Scripts\\python -m uvicorn server:app --reload --port 8000"
+	}
+}
