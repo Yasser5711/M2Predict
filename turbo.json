@@ -1,0 +1,49 @@
+{
+	"$schema": "https://turbo.build/schema.json",
+	"ui": "tui",
+	"tasks": {
+		"build": {
+			"dependsOn": ["^build"],
+			"inputs": ["$TURBO_DEFAULT$", ".env*"],
+			"outputs": ["dist/**"],
+			"env": [
+				"BETTER_AUTH_SECRET",
+				"BETTER_AUTH_URL",
+				"CORS_ORIGIN",
+				"DATABASE_URL"
+			]
+		},
+		"lint": {
+			"dependsOn": ["^lint"]
+		},
+		"check-types": {
+			"dependsOn": ["^check-types"]
+		},
+		"dev": {
+			"cache": false,
+			"persistent": true
+		},
+		"db:push": {
+			"cache": false,
+			"env": ["DATABASE_URL"]
+		},
+		"db:generate": {
+			"cache": false,
+			"env": ["DATABASE_URL"]
+		},
+		"db:check": {
+			"cache": false,
+			"env": ["DATABASE_URL"]
+		},
+		"db:migrate": {
+			"cache": false,
+			"persistent": true,
+			"env": ["DATABASE_URL"]
+		},
+		"db:studio": {
+			"cache": false,
+			"persistent": true,
+			"env": ["DATABASE_URL"]
+		}
+	}
+}
