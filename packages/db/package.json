@@ -1,0 +1,34 @@
+{
+	"name": "@M2Predict/db",
+	"type": "module",
+	"exports": {
+		".": {
+			"default": "./src/index.ts"
+		},
+		"./*": {
+			"default": "./src/*.ts"
+		}
+	},
+	"scripts": {
+		"db:push": "drizzle-kit push",
+		"db:generate": "drizzle-kit generate",
+		"db:studio": "drizzle-kit studio",
+		"db:migrate": "drizzle-kit migrate",
+		"db:check": "drizzle-kit check",
+		"check-types": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@M2Predict/env": "workspace:*",
+		"@neondatabase/serverless": "^1.0.2",
+		"dotenv": "catalog:",
+		"drizzle-orm": "^0.45.1",
+		"zod": "catalog:",
+		"pg": "^8.17.1"
+	},
+	"devDependencies": {
+		"@M2Predict/config": "workspace:*",
+		"drizzle-kit": "^0.31.8",
+		"typescript": "catalog:",
+		"@types/pg": "^8.16.0"
+	}
+}

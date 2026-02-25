@@ -1,0 +1,36 @@
+{
+	"name": "M2Predict",
+	"private": true,
+	"workspaces": [
+		"apps/*",
+		"packages/*"
+	],
+	"type": "module",
+	"scripts": {
+		"dev": "turbo dev",
+		"build": "turbo build",
+		"check-types": "turbo check-types",
+		"dev:native": "turbo -F native dev",
+		"dev:web": "turbo -F web dev",
+		"db:push": "turbo -F @M2Predict/db db:push",
+		"db:studio": "turbo -F @M2Predict/db db:studio",
+		"db:generate": "turbo -F @M2Predict/db db:generate",
+		"db:migrate": "turbo -F @M2Predict/db db:migrate",
+		"db:check": "turbo -F @M2Predict/db db:check",
+		"check": "biome check .",
+		"fix": "biome check --write ."
+	},
+	"dependencies": {
+		"@M2Predict/env": "workspace:*",
+		"dotenv": "catalog:",
+		"zod": "catalog:"
+	},
+	"devDependencies": {
+		"@M2Predict/config": "workspace:*",
+		"@biomejs/biome": "^2.2.0",
+		"@types/node": "catalog:",
+		"turbo": "^2.6.3",
+		"typescript": "catalog:"
+	},
+	"packageManager": "pnpm@10.30.0"
+}
