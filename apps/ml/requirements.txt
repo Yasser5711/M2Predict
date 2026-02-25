@@ -1,5 +1,7 @@
+fastapi
 joblib
 pandas
 pyarrow
 scikit-learn
 tqdm
+uvicorn[standard]

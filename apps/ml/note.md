@@ -1,48 +1,190 @@
 
-# sans target encoding
-## avec code postal
-    ```bash
-    python training\src\train_rf.py
-    train_rf: 100%|████████████████████████████████████████████████| 6/6 [00:29<00:00,  4.96s/step, Sauvegarde métadonnées]
-    ✅ Saved: C:\Users\miche\Desktop\Projects\M2Predict\apps\ml\artifacts\dvf_price_m2_pipeline_rf.joblib
-    📄 Meta: C:\Users\miche\Desktop\Projects\M2Predict\apps\ml\artifacts\metadata_rf.json
-    RMSE €/m²: 4176.480842180856
-    MAE  €/m²: 2150.131547328244
-    Sample prix_m2: 4866.411146102584
-    ```
+# M2Predict — Modèle ML (DVF)
 
+## 🎯 Objectif
 
-```bash
-python training\src\train_hgb.py
-train_hgb: 100%|███████████████████████████████████████████████| 6/6 [03:31<00:00, 35.32s/step, Sauvegarde métadonnées]
-✅ Saved: C:\Users\miche\Desktop\Projects\M2Predict\apps\ml\artifacts\dvf_price_m2_pipeline_hgb.joblib
-📄 Meta: C:\Users\miche\Desktop\Projects\M2Predict\apps\ml\artifacts\metadata_hgb.json
-RMSE €/m²: 4075.6592566106874
-MAE  €/m²: 2014.158865821951
-Sample prix_m2: 8892.59619038365
-```
-## avec departement
-```bash
-python training\src\train_rf.py
-train_rf: 100%|████████████████████████████████████████████████| 6/6 [00:45<00:00,  7.62s/step, Sauvegarde métadonnées]
-✅ Saved: C:\Users\miche\Desktop\Projects\M2Predict\apps\ml\artifacts\dvf_price_m2_pipeline_rf.joblib
-📄 Meta: C:\Users\miche\Desktop\Projects\M2Predict\apps\ml\artifacts\metadata_rf.json
-RMSE €/m²: 4201.960296218968
-MAE  €/m²: 2012.2160806876964
-Sample prix_m2: 9871.171294941854
-```
+Prédire le **prix au m²** d’un bien immobilier en France à partir de :
 
-```bash
-python training\src\train_hgb.py
-train_hgb: 100%|███████████████████████████████████████████████| 6/6 [00:07<00:00,  1.29s/step, Sauvegarde métadonnées]
-✅ Saved: C:\Users\miche\Desktop\Projects\M2Predict\apps\ml\artifacts\dvf_price_m2_pipeline_hgb.joblib
-📄 Meta: C:\Users\miche\Desktop\Projects\M2Predict\apps\ml\artifacts\metadata_hgb.json
-RMSE €/m²: 4217.45530380619
-MAE  €/m²: 1969.72081255088
-Sample prix_m2: 10910.186900233704
+- `code_postal`
+- `surface_reelle_bati`
+- `nombre_pieces_principales`
+- `type_local` (Maison / Appartement)
+
+On prédit `prix_m2`, puis l’app pourra calculer :
+
+prix_total = prix_m2 × surface
+
+---
+
+# 1️⃣ Dataset
+
+Source : DVF (Demande de Valeurs Foncières)
+
+### Nettoyage effectué
+
+On garde uniquement :
+- Maison / Appartement
+- surface > 0
+- valeur foncière > 0
+- nombre de pièces > 0
+
+On calcule :
+
 ```
 
-# avec target encoding
-on calculera le prix_m2 moyen par code postal
+prix_m2 = valeur_fonciere / surface_reelle_bati
 
-```bash
+```
+
+### Suppression des valeurs aberrantes
+
+On garde :
+
+```
+
+10 <= surface
+200 <= prix_m2 <= 60000
+
+````
+
+Dataset final :
+
+```json
+{
+  "raw_rows": 1387077,
+  "clean_rows": 390644,
+  "prix_m2_median": 2685,
+  "code_postal_unique": 5830
+}
+````
+
+---
+
+# 2️⃣ Modèles testés
+
+On a comparé :
+
+* RandomForest (RF)
+* HistGradientBoosting (HGB)
+
+Métriques :
+
+* MAE (erreur moyenne)
+* RMSE (erreur quadratique)
+
+---
+
+# 🔹 Sans target encoding
+
+## Avec code postal (one-hot)
+
+### RF
+
+```
+RMSE: 4176
+MAE: 2150
+```
+
+### HGB
+
+```
+RMSE: 4075
+MAE: 2014
+```
+
+👉 HGB meilleur que RF.
+
+---
+
+## Avec département uniquement
+
+### RF
+
+```
+RMSE: 4201
+MAE: 2012
+```
+
+### HGB
+
+```
+RMSE: 4217
+MAE: 1969
+```
+
+👉 Léger gain, mais perte d’information géographique.
+
+---
+
+# 3️⃣ Target Encoding (meilleure version)
+
+On remplace `code_postal` par :
+
+```
+prix_m2 moyen par code postal (calculé sur le train)
+```
+
+Avantage :
+
+* 1 colonne au lieu de 5830
+* meilleur signal géographique
+* meilleure performance
+
+---
+
+## Résultats avec Target Encoding
+
+### RF + TE
+
+```
+RMSE: 3737
+MAE: 1701
+```
+
+### HGB + TE
+
+```
+RMSE: 3823
+MAE: 1746
+```
+
+👉 **Meilleur modèle actuel : RandomForest + Target Encoding**
+
+---
+
+# 4️⃣ Artefacts produits
+
+* `dvf_price_m2_pipeline_rf.joblib`
+* `target_encoding_code_postal.json`
+* `metadata_rf.json`
+
+---
+
+# 5️⃣ Comment prédire
+
+Input :
+
+```json
+{
+  "code_postal": "75011",
+  "surface_reelle_bati": 42,
+  "nombre_pieces_principales": 2,
+  "type_local": "Appartement"
+}
+```
+
+Étapes internes :
+
+1. departement = first 2 digits(code_postal)
+2. cp_te = mapping[code_postal] ou moyenne globale
+3. prédiction via pipeline
+
+---
+
+# 🚀 Conclusion
+
+Le **RandomForest avec Target Encoding** est la version retenue pour la V1.
+
+Amélioration obtenue :
+
+MAE passé de ~2150 → ~1700 €/m²
