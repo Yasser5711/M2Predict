@@ -1,0 +1,4 @@
+.venv/
+artifacts/
+training/data/
+__pycache__/
