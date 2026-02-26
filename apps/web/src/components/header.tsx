@@ -1,31 +1,27 @@
-import { Link } from "@tanstack/react-router";
-
-import UserMenu from "./user-menu";
+import { Moon, Sun } from "lucide-react";
+import { useTheme } from "next-themes";
 
 export default function Header() {
-	const links = [
-		{ to: "/", label: "Home" },
-		{ to: "/predict", label: "Predict" },
-		{ to: "/dashboard", label: "Dashboard" },
-	] as const;
+	const { theme, setTheme } = useTheme();
 
 	return (
-		<div>
-			<div className="flex flex-row items-center justify-between px-2 py-1">
-				<nav className="flex gap-4 text-lg">
-					{links.map(({ to, label }) => {
-						return (
-							<Link key={to} to={to}>
-								{label}
-							</Link>
-						);
-					})}
-				</nav>
-				<div className="flex items-center gap-2">
-					<UserMenu />
-				</div>
+		<header
+			className="sticky top-0 z-50 border-border/50 border-b bg-card/80 backdrop-blur-xl"
+			style={{ WebkitBackdropFilter: "blur(20px)" }}
+		>
+			<div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-2.5">
+				<span className="font-medium font-mono text-sm tracking-tight">
+					M2Predict
+				</span>
+				<button
+					type="button"
+					onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+					className="flex size-8 items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
+				>
+					<Sun className="hidden size-4 dark:block" />
+					<Moon className="block size-4 dark:hidden" />
+				</button>
 			</div>
-			<hr />
-		</div>
+		</header>
 	);
 }
