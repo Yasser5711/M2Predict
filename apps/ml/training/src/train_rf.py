@@ -143,6 +143,25 @@ def main() -> None:
     # 4 — Entraînement
     pbar.set_postfix_str("Entraînement")
     pipe.fit(X_train, y_train)
+
+    # --- CONFIDENCE PARAMS (RF) ---
+    # on calcule la distribution des largeurs d'intervalle sur X_test
+    pre = pipe.named_steps["preprocess"]
+    rf = pipe.named_steps["model"]
+
+    Xt = pre.transform(X_test)  # mêmes features que voit le RF
+
+    # prédictions de chaque arbre
+    all_tree_preds = np.vstack([t.predict(Xt)
+                                for t in rf.estimators_]).T  # (n, n_trees)
+
+    q10 = np.quantile(all_tree_preds, 0.10, axis=1)
+    q90 = np.quantile(all_tree_preds, 0.90, axis=1)
+    pi_width = q90 - q10
+
+    pi_p5, pi_p95 = np.percentile(pi_width, [5, 95])
+    pi_p5, pi_p95 = float(pi_p5), float(pi_p95)
+    # --- END CONFIDENCE PARAMS ---
     pbar.update(1)
 
     # 5 — Évaluation
@@ -180,6 +199,13 @@ def main() -> None:
         "rmse": rmse,
         "mae": mae,
         "target_encoding_file": str(TE_PATH),
+        "confidence": {
+            "method": "rf_tree_quantile_width",
+            "q_low": 0.10,
+            "q_high": 0.90,
+            "pi_p5": pi_p5,
+            "pi_p95": pi_p95,
+        },
     }
     META_PATH.write_text(json.dumps(
         meta, ensure_ascii=False, indent=2), encoding="utf-8")

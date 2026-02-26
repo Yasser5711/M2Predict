@@ -27,6 +27,11 @@ MODEL_PATH = ARTIFACTS_DIR / "model.joblib"
 META_PATH = ARTIFACTS_DIR / "metadata.json"
 TE_PATH = ARTIFACTS_DIR / "target_encoding.json"
 
+BOOTSTRAP_K = 10
+BOOTSTRAP_FRAC = 0.8   # 80% du train (avec remise)
+BOOTSTRAP_DIR = ARTIFACTS_DIR / "bootstrap"
+BOOTSTRAP_DIR.mkdir(parents=True, exist_ok=True)
+
 
 def make_ohe_dense():
     # HGB needs dense (no sparse matrix)
@@ -157,6 +162,50 @@ def main() -> None:
     # 4 — Entraînement
     pbar.set_postfix_str("Entraînement")
     pipe.fit(X_train, y_train)
+
+    # --- BOOTSTRAP MODELS (HGB) ---
+    rng = np.random.RandomState(42)
+
+    X_test_preds = []  # prédictions des K modèles sur X_test
+
+    for i in range(BOOTSTRAP_K):
+        seed = int(rng.randint(0, 10_000_000))
+
+        # échantillon bootstrap du train
+        n = len(X_train)
+        m = int(n * BOOTSTRAP_FRAC)
+        idx = rng.choice(np.arange(n), size=m, replace=True)
+
+        Xb = X_train.iloc[idx].copy()
+        yb = y_train.iloc[idx].copy() if hasattr(
+            y_train, "iloc") else y_train[idx]
+
+        # clone pipeline (très important: nouveau modèle)
+        from sklearn.base import clone
+        boot_pipe = clone(pipe)
+
+        # changer le random_state du modèle
+        boot_pipe.named_steps["model"].set_params(random_state=seed)
+
+        boot_pipe.fit(Xb, yb)
+
+        # save modèle bootstrap
+        joblib.dump(boot_pipe, BOOTSTRAP_DIR / f"model_boot_{i:02d}.joblib")
+
+        # préd sur X_test pour estimer l'incertitude
+        X_test_preds.append(boot_pipe.predict(X_test))
+
+    X_test_preds = np.vstack(X_test_preds).T  # shape (n_test, K)
+
+    # intervalle bootstrap (incertitude)
+    q10 = np.quantile(X_test_preds, 0.10, axis=1)
+    q90 = np.quantile(X_test_preds, 0.90, axis=1)
+    pi_width = q90 - q10
+
+    # normalisation robuste pour transformer en score 0..1
+    pi_p5, pi_p95 = np.percentile(pi_width, [5, 95])
+    pi_p5, pi_p95 = float(pi_p5), float(pi_p95)
+    # --- END BOOTSTRAP ---
     pbar.update(1)
 
     # 5 — Évaluation
@@ -198,6 +247,16 @@ def main() -> None:
             "max_depth": 8,
             "max_iter": 400,
             "min_samples_leaf": 30,
+        },
+        "confidence": {
+            "method": "hgb_bootstrap_width",
+            "k": BOOTSTRAP_K,
+            "sample_frac": BOOTSTRAP_FRAC,
+            "q_low": 0.10,
+            "q_high": 0.90,
+            "pi_p5": pi_p5,
+            "pi_p95": pi_p95,
+            "bootstrap_dir": str(BOOTSTRAP_DIR),
         },
     }
     META_PATH.write_text(json.dumps(
