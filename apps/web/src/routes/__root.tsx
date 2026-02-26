@@ -38,6 +38,16 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
 			},
 		],
 		links: [
+			{ rel: "preconnect", href: "https://fonts.googleapis.com" },
+			{
+				rel: "preconnect",
+				href: "https://fonts.gstatic.com",
+				crossOrigin: "anonymous",
+			},
+			{
+				rel: "stylesheet",
+				href: "https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,200..800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300..800&display=swap",
+			},
 			{
 				rel: "stylesheet",
 				href: appCss,
@@ -52,8 +62,8 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
 
 function NotFound() {
 	return (
-		<div className="flex h-full flex-col items-center justify-center gap-4 text-center">
-			<p className="font-mono font-semibold text-6xl text-muted-foreground/30 tabular-nums tracking-tight">
+		<div className="flex h-full flex-col items-center justify-center gap-6 text-center">
+			<p className="font-display text-8xl text-muted-foreground/20 italic">
 				404
 			</p>
 			<p className="text-muted-foreground text-sm">Page introuvable</p>
@@ -72,10 +82,8 @@ function RootError({ error }: { error: unknown }) {
 		error instanceof Error ? error.message : "Une erreur est survenue";
 
 	return (
-		<div className="flex h-full flex-col items-center justify-center gap-4 text-center">
-			<p className="font-mono font-semibold text-4xl text-destructive/50 tracking-tight">
-				Erreur
-			</p>
+		<div className="flex h-full flex-col items-center justify-center gap-6 text-center">
+			<p className="font-display text-5xl text-destructive/40 italic">Erreur</p>
 			<p className="max-w-md text-muted-foreground text-xs">{message}</p>
 			<Link
 				to="/"
@@ -89,7 +97,7 @@ function RootError({ error }: { error: unknown }) {
 
 function RootDocument() {
 	return (
-		<html lang="en" suppressHydrationWarning>
+		<html lang="fr" suppressHydrationWarning>
 			<head>
 				<HeadContent />
 			</head>
