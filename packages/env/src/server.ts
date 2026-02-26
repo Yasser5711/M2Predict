@@ -1,5 +1,5 @@
-import "dotenv/config";
 import { createEnv } from "@t3-oss/env-core";
+import "dotenv/config";
 import { z } from "zod";
 
 export const env = createEnv({
@@ -11,6 +11,8 @@ export const env = createEnv({
 		NODE_ENV: z
 			.enum(["development", "production", "test"])
 			.default("development"),
+		ML_API_URL: z.url().default("http://localhost:8000"),
+		ML_API_KEY: z.string().min(16),
 	},
 	runtimeEnv: process.env,
 	emptyStringAsUndefined: true,
