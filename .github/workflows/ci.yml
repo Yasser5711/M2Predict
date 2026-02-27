@@ -97,6 +97,8 @@ jobs:
 
         env:
             DATABASE_URL: ${{ secrets.DATABASE_URL_STG }}
+            VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+            VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
         steps:
             - uses: actions/checkout@v4
@@ -120,10 +122,13 @@ jobs:
             - name: 🔗 Pull Vercel env (Preview)
               run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN_STG }}
 
+            - name: 🏗️ Build with Vercel
+              run: vercel build --token=${{ secrets.VERCEL_TOKEN_STG }}
+
             - name: 🚀 Deploy Preview
               id: vercel_deploy
               run: |
-                  url=$(vercel deploy --token=${{ secrets.VERCEL_TOKEN_STG }})
+                  url=$(vercel deploy --prebuilt --token=${{ secrets.VERCEL_TOKEN_STG }})
                   echo "url=$url" >> "$GITHUB_OUTPUT"
                   echo "Preview URL: $url"
 
