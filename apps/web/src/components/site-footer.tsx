@@ -1,5 +1,6 @@
-import { Clock3, Github, Globe, Sparkles } from "lucide-react";
+import { Clock3, Github, Globe } from "lucide-react";
 import { useEffect, useState } from "react";
+import { HuggingFace } from "./ui/svgs/huggingFace";
 
 type SiteFooterProps = {
 	portfolioUrl: string;
@@ -12,19 +13,21 @@ export function SiteFooter({
 	githubRepoUrl,
 	huggingFaceUrl,
 }: SiteFooterProps) {
-	const [now, setNow] = useState(() => new Date());
+	const [now, setNow] = useState<Date | null>(null);
 
 	useEffect(() => {
+		setNow(new Date());
 		const interval = setInterval(() => setNow(new Date()), 1000);
 		return () => clearInterval(interval);
 	}, []);
 
-	const currentYear = now.getFullYear();
-	const currentHour = now.toLocaleTimeString("fr-FR", {
-		hour: "2-digit",
-		minute: "2-digit",
-		second: "2-digit",
-	});
+	const currentYear = now?.getFullYear() ?? "----";
+	const currentHour =
+		now?.toLocaleTimeString("fr-FR", {
+			hour: "2-digit",
+			minute: "2-digit",
+			second: "2-digit",
+		}) ?? "--:--:--";
 
 	return (
 		<footer className="mt-10 rounded-2xl border border-border/60 bg-card/50 px-4 py-4">
@@ -61,7 +64,7 @@ export function SiteFooter({
 						rel="noreferrer"
 						className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
 					>
-						<Sparkles className="size-4" />
+						<HuggingFace className="size-4" />
 						Hugging Face
 					</a>
 				</div>
