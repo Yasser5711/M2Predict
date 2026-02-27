@@ -1,0 +1,42 @@
+name: 🚀 Deploy to Production
+
+on:
+  workflow_dispatch: {}
+
+concurrency:
+  group: deploy-prod
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+    steps:
+      - name: 📦 Checkout
+        uses: actions/checkout@v6
+
+      - name: 🧰 Setup Node + pnpm + caches
+        uses: ./.github/actions/setup
+        with:
+          node-version: "20"
+          cache-dependency-path: pnpm-lock.yaml
+
+      - name: 📥 Install deps
+        run: pnpm install --frozen-lockfile
+
+      - name: 🧹 Biome check
+        run: pnpm check
+
+      - name: 🧠 Typecheck (web)
+        run: pnpm check-types
+
+      - name: 🏗️ Build (web)
+        run: pnpm build
+
+      - name: 🐘 Apply DB migrations
+        run: pnpm db:migrate
+
+      - name: 🚀 Trigger Vercel Production Deploy (Deploy Hook)
+        run: curl -fsSL -X POST "${{ secrets.VERCEL_DEPLOY_HOOK_URL }}"

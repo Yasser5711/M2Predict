@@ -1,0 +1,141 @@
+name: 🚀 CI + Staging (gated)
+
+on:
+    pull_request:
+
+concurrency:
+    group: ci-${{ github.ref }}
+    cancel-in-progress: true
+
+permissions:
+    contents: read
+    pull-requests: write
+    issues: write
+    deployments: write
+
+jobs:
+    ci:
+        if: ${{ !startsWith(github.head_ref, 'renovate/') }}
+        runs-on: ubuntu-latest
+        outputs:
+            migrations_changed: ${{ steps.migrations.outputs.migrations }}
+        steps:
+            - uses: actions/checkout@v4
+
+            - name: 🔍 Detect migration changes
+              id: migrations
+              uses: dorny/paths-filter@v3
+              with:
+                  filters: |
+                      migrations:
+                        - 'packages/db/src/migrations/**'
+
+            - name: 🧰 Setup Node + pnpm
+              uses: ./.github/actions/setup
+              with:
+                  node-version: "20"
+                  cache-dependency-path: pnpm-lock.yaml
+
+            - name: 📥 Install dependencies
+              run: pnpm install --frozen-lockfile
+
+            - name: 🧹 Biome check
+              run: pnpm check
+
+            - name: 🧠 TypeScript typecheck
+              run: pnpm check-types
+
+            - name: 🏗️ Build (web)
+              run: pnpm build
+
+    migrations:
+        runs-on: ubuntu-latest
+        needs: ci
+        if: needs.ci.outputs.migrations_changed == 'true'
+        services:
+            postgres:
+                image: postgres:16
+                env:
+                    POSTGRES_USER: postgres
+                    POSTGRES_PASSWORD: postgres
+                    POSTGRES_DB: app_test
+                ports: ["5432:5432"]
+                options: >-
+                    --health-cmd="pg_isready -U postgres -d app_test"
+                    --health-interval=5s
+                    --health-timeout=5s
+                    --health-retries=20
+        env:
+            DATABASE_URL: postgresql://postgres:postgres@localhost:5432/app_test
+        steps:
+            - uses: actions/checkout@v4
+            - uses: pnpm/action-setup@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: "20"
+                  cache: pnpm
+                  cache-dependency-path: pnpm-lock.yaml
+            - run: pnpm install --frozen-lockfile
+            - run: pnpm db:check
+            - run: |
+                  pnpm db:generate
+                  git diff --exit-code
+            - run: pnpm db:migrate
+
+    deploy_preview:
+        name: 🚀 Deploy to Preview
+        runs-on: ubuntu-latest
+        needs: ci
+        if: github.event_name == 'pull_request'
+        concurrency:
+            group: deploy-preview-pr-${{ github.event.pull_request.number }}
+            cancel-in-progress: true
+
+        environment:
+            name: preview
+            url: ${{ steps.vercel_deploy.outputs.url }}
+
+        env:
+            DATABASE_URL: ${{ secrets.DATABASE_URL_STG }}
+
+        steps:
+            - uses: actions/checkout@v4
+            - uses: pnpm/action-setup@v4
+            - uses: actions/setup-node@v4
+              with:
+                  node-version: 20
+                  cache: pnpm
+                  cache-dependency-path: pnpm-lock.yaml
+
+            - name: 📥 Install dependencies
+              run: pnpm install --frozen-lockfile
+
+            - name: 🧹 Run migrations
+              if: needs.ci.outputs.migrations_changed == 'true'
+              run: pnpm db:migrate
+
+            - name: 📦 Install Vercel CLI
+              run: npm i -g vercel
+
+            - name: 🔗 Pull Vercel env (Preview)
+              run: vercel pull --yes --environment=preview --token=${{ secrets.VERCEL_TOKEN_STG }}
+
+            - name: 🚀 Deploy Preview
+              id: vercel_deploy
+              run: |
+                  url=$(vercel deploy --token=${{ secrets.VERCEL_TOKEN_STG }})
+                  echo "url=$url" >> "$GITHUB_OUTPUT"
+                  echo "Preview URL: $url"
+
+            - name: 💬 Comment URL on PR
+              uses: actions/github-script@v8
+              with:
+                  script: |
+                      const url = `${{ steps.vercel_deploy.outputs.url }}`;
+                      const body = `✅ Deployed to **Preview**:\n\n🔗 ${url}`;
+                      await github.rest.issues.createComment({
+                        owner: context.repo.owner,
+                        repo: context.repo.repo,
+                        issue_number: context.payload.pull_request.number,
+                        body
+                      });

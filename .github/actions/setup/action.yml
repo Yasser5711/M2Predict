@@ -1,0 +1,45 @@
+name: Setup Node + pnpm + Turbo & Vite cache
+description: Installs pnpm, sets up Node.js with pnpm cache, and caches Turborepo + Vite build cache
+inputs:
+  node-version:
+    description: Node.js version
+    required: false
+    default: "20"
+  cache-dependency-path:
+    description: Lockfile path(s) for setup-node pnpm cache
+    required: false
+    default: "pnpm-lock.yaml"
+  vite-cache-path:
+    description: Path(s) to Vite cache folders (newline-separated)
+    required: false
+    default: |
+      apps/web/node_modules/.vite
+
+runs:
+  using: composite
+  steps:
+    - name: 📦 Setup pnpm
+      uses: pnpm/action-setup@v4
+
+    - name: 🟢 Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ inputs.node-version }}
+        cache: pnpm
+        cache-dependency-path: ${{ inputs.cache-dependency-path }}
+
+    - name: ⚡ Cache Turborepo
+      uses: actions/cache@v5
+      with:
+        path: node_modules/.cache/turbo
+        key: ${{ runner.os }}-turbo-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-turbo-
+
+    - name: ⚡ Cache Vite build cache
+      uses: actions/cache@v5
+      with:
+        path: ${{ inputs.vite-cache-path }}
+        key: ${{ runner.os }}-vite-${{ hashFiles('**/pnpm-lock.yaml') }}-${{ hashFiles('apps/web/src/**/*.ts', 'apps/web/src/**/*.tsx') }}
+        restore-keys: |
+          ${{ runner.os }}-vite-${{ hashFiles('**/pnpm-lock.yaml') }}-
