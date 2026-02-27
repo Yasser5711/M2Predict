@@ -27,7 +27,8 @@
 			"!**/.source",
 			"!**/convex/_generated",
 			"!**/apps/ml",
-			"!**/apps/web/src/components/animate-ui"
+			"!**/apps/web/src/components/animate-ui",
+			"!**/apps/web/src/components/svgs"
 		]
 	},
 	"formatter": {

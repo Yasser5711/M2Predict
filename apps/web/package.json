@@ -6,7 +6,8 @@
 		"build": "vite build",
 		"serve": "vite preview",
 		"dev": "vite dev",
-		"check-types": "tsc --noEmit"
+		"check-types": "tsc --noEmit",
+		"shadcn:add": "shadcn add"
 	},
 	"dependencies": {
 		"@M2Predict/api": "workspace:*",

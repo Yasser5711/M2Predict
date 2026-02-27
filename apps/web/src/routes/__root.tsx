@@ -106,6 +106,8 @@ function RootDocument() {
 					attribute="class"
 					defaultTheme="dark"
 					enableSystem={false}
+					themes={["light", "dark"]}
+					disableTransitionOnChange
 				>
 					<div className="bg-mesh" />
 					<div className="grid h-svh grid-rows-[auto_1fr]">
