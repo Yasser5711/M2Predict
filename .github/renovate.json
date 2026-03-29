@@ -1,0 +1,192 @@
+{
+	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
+	"extends": [
+		"config:recommended"
+	],
+	"prCreation": "approval",
+	"dependencyDashboard": true,
+	"enabledManagers": ["npm", "github-actions"],
+	"ignorePaths": ["apps/ml/**", "apps/tui/**"],
+	"prConcurrentLimit": 1,
+	"prHourlyLimit": 1,
+	"packageRules": [
+		{
+			"description": "Auto-merge patch updates from all packages",
+			"matchUpdateTypes": ["patch"],
+			"automerge": true,
+			"prCreation": "immediate",
+			"automergeType": "pr",
+			"addLabels": ["auto-merge"]
+		},
+		{
+			"matchFileNames": [
+				"pnpm-workspace.yaml"
+			],
+			"groupName": "workspace catalog updates",
+			"groupSlug": "workspace-catalog",
+			"addLabels": [
+				"scope:catalog"
+			]
+		},
+		{
+			"matchPackageNames": [
+				"pnpm",
+				"turbo",
+				"@biomejs/biome"
+			],
+			"groupName": "toolchain",
+			"groupSlug": "toolchain",
+			"automerge": true,
+			"prCreation": "immediate",
+			"addLabels": [
+				"scope:tooling",
+				"auto-merge"
+			]
+		},
+		{
+			"matchPackageNames": [
+				"vitest",
+				"@vitest/coverage-v8",
+				"happy-dom",
+				"jsdom"
+			],
+			"groupName": "testing tooling",
+			"groupSlug": "testing-tooling",
+			"automerge": true,
+			"prCreation": "immediate",
+			"addLabels": [
+				"scope:tooling",
+				"auto-merge"
+			]
+		},
+		{
+			"matchPackageNames": [
+				"typescript",
+				"ts-node"
+			],
+			"groupName": "typescript",
+			"groupSlug": "typescript",
+			"automerge": true,
+			"prCreation": "immediate",
+			"addLabels": [
+				"scope:shared",
+				"auto-merge"
+			]
+		},
+		{
+			"groupName": "types",
+			"groupSlug": "types",
+			"automerge": true,
+			"prCreation": "immediate",
+			"addLabels": [
+				"scope:shared",
+				"auto-merge"
+			],
+			"matchPackageNames": [
+				"/^@types//"
+			]
+		},
+		{
+			"groupName": "tRPC",
+			"groupSlug": "trpc",
+			"addLabels": [
+				"scope:shared"
+			],
+			"matchPackageNames": [
+				"/^@trpc//"
+			]
+		},
+		{
+			"groupName": "TanStack",
+			"groupSlug": "tanstack",
+			"addLabels": [
+				"scope:shared"
+			],
+			"matchPackageNames": [
+				"/^@tanstack//"
+			]
+		},
+		{
+			"matchPackageNames": [
+				"react",
+				"react-dom",
+				"react-router",
+				"@react-router/dev",
+				"@react-router/node",
+				"@react-router/serve"
+			],
+			"groupName": "react-router",
+			"groupSlug": "react-router",
+			"addLabels": [
+				"scope:web"
+			]
+		},
+		{
+			"matchPackageNames": [
+				"vite",
+				"/^@vitejs//"
+			],
+			"groupName": "vite",
+			"groupSlug": "vite",
+			"addLabels": [
+				"scope:web"
+			]
+		},
+		{
+			"groupName": "drizzle",
+			"groupSlug": "drizzle",
+			"addLabels": [
+				"scope:db"
+			],
+			"matchPackageNames": [
+				"/^drizzle/",
+				"/^drizzle-/"
+			]
+		},
+		{
+			"matchPackageNames": [
+				"pg",
+				"pg-pool",
+				"@neondatabase/serverless"
+			],
+			"groupName": "postgres",
+			"groupSlug": "postgres",
+			"addLabels": [
+				"scope:db"
+			]
+		},
+		{
+			"matchPackageNames": [
+				"zod"
+			],
+			"groupName": "zod",
+			"groupSlug": "zod",
+			"addLabels": [
+				"scope:shared"
+			]
+		},
+		{
+			"matchPackageNames": [
+				"better-auth"
+			],
+			"groupName": "better-auth",
+			"groupSlug": "better-auth",
+			"addLabels": [
+				"scope:auth"
+			]
+		},
+		{
+			"matchUpdateTypes": [
+				"lockFileMaintenance"
+			],
+			"groupName": "lockfile maintenance",
+			"groupSlug": "lockfile-maintenance",
+			"automerge": true,
+			"prCreation": "immediate",
+			"addLabels": ["auto-merge"]
+		}
+	],
+	"schedule": [
+		"at any time"
+	]
+}
