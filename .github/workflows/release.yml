@@ -1,73 +1,29 @@
-name: 📦 Release
+name: "📦 Release"
 
 on:
-    workflow_dispatch:
-        inputs:
-            version:
-                description: "Release version (e.g. v0.2.0)"
-                required: true
-                type: string
-    workflow_run:
-        workflows: ["🚀 Deploy to Production"]
-        types: [completed]
-
-concurrency:
-    group: release
-    cancel-in-progress: false
+  push:
+    branches: [master]
 
 permissions:
-    contents: write
+  contents: write
+  pull-requests: write
 
 jobs:
-    release:
-        if: >-
-            github.event_name == 'workflow_dispatch' ||
-            (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success')
-        runs-on: ubuntu-latest
-        steps:
-            - name: 📦 Checkout
-              uses: actions/checkout@v6
-              with:
-                  fetch-depth: 0
+  release-please:
+    runs-on: ubuntu-latest
+    outputs:
+      release_created: ${{ steps.release.outputs.release_created }}
+      tag_name: ${{ steps.release.outputs.tag_name }}
+    steps:
+      - uses: googleapis/release-please-action@v4
+        id: release
+        with:
+          config-file: release-please-config.json
+          manifest-file: .release-please-manifest.json
 
-            - name: 🏷️ Determine version
-              id: version
-              shell: bash
-              run: |
-                  if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
-                    # Strip leading 'v' if present
-                    INPUT="${{ github.event.inputs.version }}"
-                    VERSION="${INPUT#v}"
-                  else
-                    # Auto-increment patch from latest git tag
-                    LATEST=$(git tag --list 'v*' --sort=-version:refname | head -n1)
-                    if [ -z "$LATEST" ]; then
-                      VERSION="0.0.1"
-                    else
-                      CURRENT="${LATEST#v}"
-                      MAJOR=$(echo "$CURRENT" | cut -d. -f1)
-                      MINOR=$(echo "$CURRENT" | cut -d. -f2)
-                      PATCH=$(echo "$CURRENT" | cut -d. -f3)
-                      VERSION="${MAJOR}.${MINOR}.$((PATCH + 1))"
-                    fi
-                  fi
-
-                  TAG="v${VERSION}"
-
-                  # Check if tag already exists
-                  if git rev-parse "$TAG" >/dev/null 2>&1; then
-                    echo "::error::Tag $TAG already exists. Please use a different version."
-                    exit 1
-                  fi
-
-                  echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
-                  echo "tag=${TAG}" >> "$GITHUB_OUTPUT"
-                  echo "📦 Release version: ${VERSION} (tag: ${TAG})"
-
-            - name: 🎉 Create GitHub Release
-              env:
-                  GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-              run: |
-                  gh release create "${{ steps.version.outputs.tag }}" \
-                    --title "${{ steps.version.outputs.tag }}" \
-                    --generate-notes
+  label-prs:
+    needs: release-please
+    if: needs.release-please.outputs.release_created == 'true'
+    uses: ./.github/workflows/label-released-prs.yml
+    with:
+      all: false
