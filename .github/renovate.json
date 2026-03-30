@@ -5,13 +5,10 @@
 	"dependencyDashboard": true,
 	"enabledManagers": ["npm", "github-actions"],
 	"ignorePaths": ["apps/ml/**", "apps/tui/**"],
-	"prConcurrentLimit": 1,
-	"prHourlyLimit": 1,
 	"packageRules": [
 		{
 			"description": "Auto-merge patch updates from all packages",
 			"matchUpdateTypes": ["patch"],
-			"automerge": true,
 			"prCreation": "immediate",
 			"automergeType": "pr",
 			"addLabels": ["auto-merge"]
@@ -26,7 +23,6 @@
 			"matchPackageNames": ["pnpm", "turbo", "@biomejs/biome"],
 			"groupName": "toolchain",
 			"groupSlug": "toolchain",
-			"automerge": true,
 			"prCreation": "immediate",
 			"addLabels": ["scope:tooling", "auto-merge"]
 		},
@@ -39,7 +35,6 @@
 			],
 			"groupName": "testing tooling",
 			"groupSlug": "testing-tooling",
-			"automerge": true,
 			"prCreation": "immediate",
 			"addLabels": ["scope:tooling", "auto-merge"]
 		},
@@ -47,14 +42,12 @@
 			"matchPackageNames": ["typescript", "ts-node"],
 			"groupName": "typescript",
 			"groupSlug": "typescript",
-			"automerge": true,
 			"prCreation": "immediate",
 			"addLabels": ["scope:shared", "auto-merge"]
 		},
 		{
 			"groupName": "types",
 			"groupSlug": "types",
-			"automerge": true,
 			"prCreation": "immediate",
 			"addLabels": ["scope:shared", "auto-merge"],
 			"matchPackageNames": ["/^@types//"]
@@ -118,7 +111,6 @@
 			"matchUpdateTypes": ["lockFileMaintenance"],
 			"groupName": "lockfile maintenance",
 			"groupSlug": "lockfile-maintenance",
-			"automerge": true,
 			"prCreation": "immediate",
 			"addLabels": ["auto-merge"]
 		}
