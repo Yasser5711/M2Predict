@@ -1,8 +1,6 @@
 {
 	"$schema": "https://docs.renovatebot.com/renovate-schema.json",
-	"extends": [
-		"config:recommended"
-	],
+	"extends": ["config:recommended"],
 	"prCreation": "approval",
 	"dependencyDashboard": true,
 	"enabledManagers": ["npm", "github-actions"],
@@ -19,29 +17,18 @@
 			"addLabels": ["auto-merge"]
 		},
 		{
-			"matchFileNames": [
-				"pnpm-workspace.yaml"
-			],
+			"matchFileNames": ["pnpm-workspace.yaml"],
 			"groupName": "workspace catalog updates",
 			"groupSlug": "workspace-catalog",
-			"addLabels": [
-				"scope:catalog"
-			]
+			"addLabels": ["scope:catalog"]
 		},
 		{
-			"matchPackageNames": [
-				"pnpm",
-				"turbo",
-				"@biomejs/biome"
-			],
+			"matchPackageNames": ["pnpm", "turbo", "@biomejs/biome"],
 			"groupName": "toolchain",
 			"groupSlug": "toolchain",
 			"automerge": true,
 			"prCreation": "immediate",
-			"addLabels": [
-				"scope:tooling",
-				"auto-merge"
-			]
+			"addLabels": ["scope:tooling", "auto-merge"]
 		},
 		{
 			"matchPackageNames": [
@@ -54,57 +41,35 @@
 			"groupSlug": "testing-tooling",
 			"automerge": true,
 			"prCreation": "immediate",
-			"addLabels": [
-				"scope:tooling",
-				"auto-merge"
-			]
+			"addLabels": ["scope:tooling", "auto-merge"]
 		},
 		{
-			"matchPackageNames": [
-				"typescript",
-				"ts-node"
-			],
+			"matchPackageNames": ["typescript", "ts-node"],
 			"groupName": "typescript",
 			"groupSlug": "typescript",
 			"automerge": true,
 			"prCreation": "immediate",
-			"addLabels": [
-				"scope:shared",
-				"auto-merge"
-			]
+			"addLabels": ["scope:shared", "auto-merge"]
 		},
 		{
 			"groupName": "types",
 			"groupSlug": "types",
 			"automerge": true,
 			"prCreation": "immediate",
-			"addLabels": [
-				"scope:shared",
-				"auto-merge"
-			],
-			"matchPackageNames": [
-				"/^@types//"
-			]
+			"addLabels": ["scope:shared", "auto-merge"],
+			"matchPackageNames": ["/^@types//"]
 		},
 		{
 			"groupName": "tRPC",
 			"groupSlug": "trpc",
-			"addLabels": [
-				"scope:shared"
-			],
-			"matchPackageNames": [
-				"/^@trpc//"
-			]
+			"addLabels": ["scope:shared"],
+			"matchPackageNames": ["/^@trpc//"]
 		},
 		{
 			"groupName": "TanStack",
 			"groupSlug": "tanstack",
-			"addLabels": [
-				"scope:shared"
-			],
-			"matchPackageNames": [
-				"/^@tanstack//"
-			]
+			"addLabels": ["scope:shared"],
+			"matchPackageNames": ["/^@tanstack//"]
 		},
 		{
 			"matchPackageNames": [
@@ -117,68 +82,40 @@
 			],
 			"groupName": "react-router",
 			"groupSlug": "react-router",
-			"addLabels": [
-				"scope:web"
-			]
+			"addLabels": ["scope:web"]
 		},
 		{
-			"matchPackageNames": [
-				"vite",
-				"/^@vitejs//"
-			],
+			"matchPackageNames": ["vite", "/^@vitejs//"],
 			"groupName": "vite",
 			"groupSlug": "vite",
-			"addLabels": [
-				"scope:web"
-			]
+			"addLabels": ["scope:web"]
 		},
 		{
 			"groupName": "drizzle",
 			"groupSlug": "drizzle",
-			"addLabels": [
-				"scope:db"
-			],
-			"matchPackageNames": [
-				"/^drizzle/",
-				"/^drizzle-/"
-			]
+			"addLabels": ["scope:db"],
+			"matchPackageNames": ["/^drizzle/", "/^drizzle-/"]
 		},
 		{
-			"matchPackageNames": [
-				"pg",
-				"pg-pool",
-				"@neondatabase/serverless"
-			],
+			"matchPackageNames": ["pg", "pg-pool", "@neondatabase/serverless"],
 			"groupName": "postgres",
 			"groupSlug": "postgres",
-			"addLabels": [
-				"scope:db"
-			]
+			"addLabels": ["scope:db"]
 		},
 		{
-			"matchPackageNames": [
-				"zod"
-			],
+			"matchPackageNames": ["zod"],
 			"groupName": "zod",
 			"groupSlug": "zod",
-			"addLabels": [
-				"scope:shared"
-			]
+			"addLabels": ["scope:shared"]
 		},
 		{
-			"matchPackageNames": [
-				"better-auth"
-			],
+			"matchPackageNames": ["better-auth"],
 			"groupName": "better-auth",
 			"groupSlug": "better-auth",
-			"addLabels": [
-				"scope:auth"
-			]
+			"addLabels": ["scope:auth"]
 		},
 		{
-			"matchUpdateTypes": [
-				"lockFileMaintenance"
-			],
+			"matchUpdateTypes": ["lockFileMaintenance"],
 			"groupName": "lockfile maintenance",
 			"groupSlug": "lockfile-maintenance",
 			"automerge": true,
@@ -186,7 +123,5 @@
 			"addLabels": ["auto-merge"]
 		}
 	],
-	"schedule": [
-		"at any time"
-	]
+	"schedule": ["at any time"]
 }
