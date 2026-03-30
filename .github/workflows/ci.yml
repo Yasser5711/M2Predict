@@ -15,7 +15,6 @@ permissions:
 
 jobs:
   ci:
-    if: ${{ !startsWith(github.head_ref, 'renovate/') }}
     runs-on: ubuntu-latest
     outputs:
       migrations_changed: ${{ steps.migrations.outputs.migrations }}
