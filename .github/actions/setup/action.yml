@@ -1,10 +1,12 @@
 name: Setup Node + pnpm + Turbo cache
-description: Installs pnpm, sets up Node.js with pnpm cache, and caches Turborepo
+description: Installs pnpm, sets up Node.js with pnpm cache, and caches the Turborepo local cache
+
 inputs:
   node-version:
     description: Node.js version
     required: false
     default: "20"
+
   cache-dependency-path:
     description: Lockfile path(s) for setup-node pnpm cache
     required: false
@@ -13,20 +15,20 @@ inputs:
 runs:
   using: composite
   steps:
-    - name: 📦 Setup pnpm
+    - name: Setup pnpm
       uses: pnpm/action-setup@v4
 
-    - name: 🟢 Setup Node.js
-      uses: actions/setup-node@v4
+    - name: Setup Node.js
+      uses: actions/setup-node@v6
       with:
         node-version: ${{ inputs.node-version }}
         cache: pnpm
         cache-dependency-path: ${{ inputs.cache-dependency-path }}
 
-    - name: ⚡ Cache Turborepo
+    - name: Cache Turborepo
       uses: actions/cache@v5
       with:
         path: .turbo/cache
-        key: ${{ runner.os }}-turbo-${{ github.sha }}
+        key: ${{ runner.os }}-turbo-${{ hashFiles('pnpm-lock.yaml', 'package.json', 'turbo.json', 'apps/*/package.json', 'packages/*/package.json') }}
         restore-keys: |
           ${{ runner.os }}-turbo-
