@@ -1,5 +1,12 @@
 # Changelog
 
+## [1.0.1](https://github.com/Yasser5711/M2Predict/compare/M2Predict-v1.0.0...M2Predict-v1.0.1) (2026-03-31)
+
+
+### Bug Fixes
+
+* **deps:** update react-router to v19.2.4 ([#17](https://github.com/Yasser5711/M2Predict/issues/17)) ([227aae7](https://github.com/Yasser5711/M2Predict/commit/227aae7c1a711eb3fee9b734841fcc43a10320b6))
+
 ## 1.0.0 (2026-03-29)
 
 
