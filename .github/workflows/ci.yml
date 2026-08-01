@@ -15,6 +15,7 @@ permissions:
 
 jobs:
   ci:
+    if: ${{ github.event.pull_request.draft == false && !startsWith(github.head_ref, 'renovate/') && !startsWith(github.head_ref, 'release-please') }}
     runs-on: ubuntu-latest
     env:
       TURBO_TOKEN: ${{ secrets.TURBO_TOKEN }}
