@@ -1,5 +1,6 @@
-import { Clock3, Github, Globe } from "lucide-react";
+import { Clock3, Globe } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Github } from "./ui/svgs/github";
 import { HuggingFace } from "./ui/svgs/huggingFace";
 
 type SiteFooterProps = {
