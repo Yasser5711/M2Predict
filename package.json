@@ -32,6 +32,6 @@
 		"turbo": "^2.11.6",
 		"typescript": "catalog:"
 	},
-	"packageManager": "pnpm@10.34.6",
+	"packageManager": "pnpm@12.11.2",
 	"version": "1.0.0"
 }
