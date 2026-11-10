@@ -55,18 +55,18 @@ Contrainte appliquée :
 ```
 surface >= 10 m²
 200 <= prix_m2 <= 60 000
-````
+```
 
 ## Dataset final
 
 ```json
 {
-  "raw_rows": 1387077,
-  "clean_rows": 390644,
-  "prix_m2_median": 2685,
-  "code_postal_unique": 5830
+	"raw_rows": 1387077,
+	"clean_rows": 390644,
+	"prix_m2_median": 2685,
+	"code_postal_unique": 5830
 }
-````
+```
 
 ---
 
@@ -74,13 +74,13 @@ surface >= 10 m²
 
 ## Modèles comparés
 
-* RandomForestRegressor (RF)
-* HistGradientBoostingRegressor (HGB)
+- RandomForestRegressor (RF)
+- HistGradientBoostingRegressor (HGB)
 
 ## Métriques utilisées
 
-* MAE (Mean Absolute Error)
-* RMSE (Root Mean Squared Error)
+- MAE (Mean Absolute Error)
+- RMSE (Root Mean Squared Error)
 
 ---
 
@@ -119,15 +119,15 @@ prix_m2 moyen par code postal
 
 Méthode :
 
-* KFold Out-Of-Fold (anti data leakage)
-* smoothing = 20
-* fallback = moyenne globale
+- KFold Out-Of-Fold (anti data leakage)
+- smoothing = 20
+- fallback = moyenne globale
 
 ## Avantages
 
-* 1 variable au lieu de 5 830 colonnes one-hot
-* signal géographique plus fort
-* meilleure généralisation
+- 1 variable au lieu de 5 830 colonnes one-hot
+- signal géographique plus fort
+- meilleure généralisation
 
 ---
 
@@ -166,13 +166,12 @@ Ce n’est pas une probabilité statistique.
 
 ## 🔹 RandomForest — Méthode
 
-* Récupération des prédictions de tous les arbres
-* Calcul des quantiles :
-
-  * q10
-  * q90
-* Intervalle = q90 − q10
-* Score normalisé entre p5 et p95 observés au training
+- Récupération des prédictions de tous les arbres
+- Calcul des quantiles :
+  - q10
+  - q90
+- Intervalle = q90 − q10
+- Score normalisé entre p5 et p95 observés au training
 
 Méthode interne :
 
@@ -184,9 +183,9 @@ rf_tree_quantile_width
 
 ## 🔹 HGB — Méthode Bootstrap
 
-* 10 modèles HGB entraînés sur échantillons bootstrap
-* Calcul de la dispersion des prédictions
-* Même logique q10/q90
+- 10 modèles HGB entraînés sur échantillons bootstrap
+- Calcul de la dispersion des prédictions
+- Même logique q10/q90
 
 Méthode interne :
 
@@ -228,10 +227,10 @@ artifacts/models/v1_hgb_te/
 
 Contenu :
 
-* model.joblib
-* metadata.json
-* target_encoding.json
-* bootstrap models (HGB)
+- model.joblib
+- metadata.json
+- target_encoding.json
+- bootstrap models (HGB)
 
 ---
 
@@ -248,12 +247,29 @@ Input :
 
 ```json
 {
-  "code_postal": "75011",
-  "surface_reelle_bati": 42,
-  "nombre_pieces_principales": 2,
-  "type_local": "Appartement"
+	"code_postal": "75011",
+	"surface_reelle_bati": 42,
+	"nombre_pieces_principales": 2,
+	"type_local": "Appartement"
 }
 ```
+
+---
+
+# 🐳 Déploiement (app web)
+
+Node **24.22.1**. Image construite depuis la racine du dépôt :
+
+```bash
+docker build -t m2predict-web .
+docker run -p 3000:3000 \
+  -e DATABASE_URL=... -e BETTER_AUTH_SECRET=... \
+  -e BETTER_AUTH_URL=https://... -e CORS_ORIGIN=https://... \
+  -e ML_API_URL=https://... -e ML_API_KEY=... \
+  m2predict-web
+```
+
+L'API ML a sa propre image (`apps/ml/Dockerfile`). Les migrations restent une étape de déploiement : `pnpm db:migrate`.
 
 ---
 
@@ -267,12 +283,12 @@ Input :
 
 # 🔮 Améliorations futures
 
-* CatBoost
-* LightGBM
-* XGBoost
-* Ensemble RF + HGB
-* Monitoring de dérive des données
-* Validation métier automatique
+- CatBoost
+- LightGBM
+- XGBoost
+- Ensemble RF + HGB
+- Monitoring de dérive des données
+- Validation métier automatique
 
 ---
 
@@ -280,6 +296,3 @@ Input :
 
 Ce modèle fournit une estimation statistique basée sur les données historiques DVF.
 Il ne remplace pas une expertise immobilière professionnelle.
-
-
-

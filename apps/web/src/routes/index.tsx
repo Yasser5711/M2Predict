@@ -74,7 +74,7 @@ function ConfidenceBar({ score }: { score: number }) {
 						{label}
 					</span>
 				</span>
-				<span className="font-mono text-lg tabular-nums tracking-tight">
+				<span className="font-mono text-lg tracking-tight tabular-nums">
 					<CountingNumber
 						number={score * 100}
 						decimalPlaces={1}
@@ -85,7 +85,7 @@ function ConfidenceBar({ score }: { score: number }) {
 				</span>
 			</div>
 
-			<div className="relative h-2 w-full overflow-hidden rounded-full bg-muted/80">
+			<div className="bg-muted/80 relative h-2 w-full overflow-hidden rounded-full">
 				<div
 					className="absolute inset-y-0 left-0 origin-left rounded-full transition-transform duration-[1800ms] ease-[cubic-bezier(0.16,1,0.3,1)]"
 					style={{
@@ -94,11 +94,11 @@ function ConfidenceBar({ score }: { score: number }) {
 						backgroundColor: color,
 					}}
 				/>
-				<div className="absolute inset-y-0 left-1/2 w-px bg-foreground/10" />
-				<div className="absolute inset-y-0 left-[80%] w-px bg-foreground/10" />
+				<div className="bg-foreground/10 absolute inset-y-0 left-1/2 w-px" />
+				<div className="bg-foreground/10 absolute inset-y-0 left-[80%] w-px" />
 			</div>
 
-			<div className="flex justify-between font-mono text-[10px] text-muted-foreground/50">
+			<div className="text-muted-foreground/50 flex justify-between font-mono text-[10px]">
 				<span>0</span>
 				<span>50</span>
 				<span>100</span>
@@ -123,7 +123,7 @@ function PriceRangeBar({
 	return (
 		<div className="space-y-3">
 			<div className="relative h-10">
-				<div className="absolute inset-x-0 top-1/2 h-1.5 -translate-y-1/2 rounded-full bg-muted/80" />
+				<div className="bg-muted/80 absolute inset-x-0 top-1/2 h-1.5 -translate-y-1/2 rounded-full" />
 
 				<div
 					className="absolute top-1/2 h-1.5 -translate-y-1/2 rounded-full"
@@ -141,32 +141,32 @@ function PriceRangeBar({
 					style={{ left: `${clampedPosition}%` }}
 				>
 					<div className="flex flex-col items-center">
-						<div className="size-3.5 rotate-45 rounded-sm border-2 border-primary bg-card shadow-sm" />
+						<div className="border-primary bg-card size-3.5 rotate-45 rounded-sm border-2 shadow-sm" />
 					</div>
 				</div>
 			</div>
 
 			<div className="flex items-start justify-between">
 				<div className="text-left">
-					<div className="font-mono text-muted-foreground text-xs tabular-nums">
+					<div className="text-muted-foreground font-mono text-xs tabular-nums">
 						{q10.toLocaleString("fr-FR", { minimumFractionDigits: 2 })}{" "}
 						<span className="text-[10px]">EUR/m²</span>
 					</div>
-					<div className="text-[10px] text-muted-foreground/50">P10</div>
+					<div className="text-muted-foreground/50 text-[10px]">P10</div>
 				</div>
 				<div className="text-center">
-					<div className="font-medium font-mono text-sm tabular-nums">
+					<div className="font-mono text-sm font-medium tabular-nums">
 						{predicted.toLocaleString("fr-FR", { minimumFractionDigits: 2 })}{" "}
-						<span className="text-[10px] text-muted-foreground">EUR/m²</span>
+						<span className="text-muted-foreground text-[10px]">EUR/m²</span>
 					</div>
-					<div className="text-[10px] text-muted-foreground/50">Prediction</div>
+					<div className="text-muted-foreground/50 text-[10px]">Prediction</div>
 				</div>
 				<div className="text-right">
-					<div className="font-mono text-muted-foreground text-xs tabular-nums">
+					<div className="text-muted-foreground font-mono text-xs tabular-nums">
 						{q90.toLocaleString("fr-FR", { minimumFractionDigits: 2 })}{" "}
 						<span className="text-[10px]">EUR/m²</span>
 					</div>
-					<div className="text-[10px] text-muted-foreground/50">P90</div>
+					<div className="text-muted-foreground/50 text-[10px]">P90</div>
 				</div>
 			</div>
 		</div>
@@ -207,7 +207,7 @@ function ResultsSkeleton() {
 
 function PredictComponent() {
 	const trpc = useTRPC();
-	const portfolioUrl = "https://www.yassermekhfi.me";
+	const portfolioUrl = "https://www.yassermekhfi.dev";
 	const githubRepoUrl = "https://github.com/Yasser5711/M2Predict";
 	const huggingFaceUrl = "https://huggingface.co/spaces/yasser5711/m2predict";
 
@@ -245,7 +245,7 @@ function PredictComponent() {
 					<h1 className="font-display text-2xl tracking-tight sm:text-3xl">
 						Estimation <span className="text-primary italic">prix / m²</span>
 					</h1>
-					<p className="mt-1.5 max-w-md text-muted-foreground text-sm">
+					<p className="text-muted-foreground mt-1.5 max-w-md text-sm">
 						Estimation du prix au metre carre pour l'immobilier residentiel en
 						France, propulse par le machine learning.
 					</p>
@@ -260,7 +260,7 @@ function PredictComponent() {
 						<Card>
 							<CardHeader className="pb-4">
 								<CardTitle className="flex items-center gap-2 text-sm">
-									<MapPin className="size-3.5 text-primary" />
+									<MapPin className="text-primary size-3.5" />
 									Parametres
 								</CardTitle>
 							</CardHeader>
@@ -381,13 +381,13 @@ function PredictComponent() {
 					{!predict.data && !predict.isPending && !predict.error && (
 						<Fade>
 							<div className="flex h-full min-h-60 flex-col items-center justify-center text-center">
-								<div className="mb-5 flex size-20 items-center justify-center rounded-2xl bg-muted/40">
-									<Building2 className="size-9 text-muted-foreground/30" />
+								<div className="bg-muted/40 mb-5 flex size-20 items-center justify-center rounded-2xl">
+									<Building2 className="text-muted-foreground/30 size-9" />
 								</div>
-								<p className="font-display text-lg text-muted-foreground/50 italic">
+								<p className="font-display text-muted-foreground/50 text-lg italic">
 									Lancez une estimation
 								</p>
-								<p className="mt-1 max-w-xs text-muted-foreground/40 text-xs">
+								<p className="text-muted-foreground/40 mt-1 max-w-xs text-xs">
 									Remplissez les parametres et cliquez sur Estimer
 								</p>
 							</div>
@@ -425,11 +425,11 @@ function PredictComponent() {
 									>
 										<Card>
 											<CardContent className="pt-6 pb-6">
-												<p className="mb-2 text-muted-foreground text-xs">
+												<p className="text-muted-foreground mb-2 text-xs">
 													Prix estime par m²
 												</p>
 												<div className="flex items-baseline gap-2">
-													<span className="font-mono font-semibold text-4xl tabular-nums tracking-tight sm:text-5xl">
+													<span className="font-mono text-4xl font-semibold tracking-tight tabular-nums sm:text-5xl">
 														<CountingNumber
 															number={Math.round(predict.data.prix_m2)}
 															thousandSeparator=" "
@@ -440,7 +440,7 @@ function PredictComponent() {
 															}}
 														/>
 													</span>
-													<span className="font-display text-lg text-muted-foreground italic">
+													<span className="font-display text-muted-foreground text-lg italic">
 														EUR/m²
 													</span>
 												</div>
@@ -457,10 +457,10 @@ function PredictComponent() {
 										<CardContent className="pt-5">
 											<div className="flex items-start justify-between">
 												<div>
-													<p className="mb-1.5 text-muted-foreground text-xs">
+													<p className="text-muted-foreground mb-1.5 text-xs">
 														Prix total estime
 													</p>
-													<p className="font-medium font-mono text-xl tabular-nums">
+													<p className="font-mono text-xl font-medium tabular-nums">
 														<CountingNumber
 															number={Math.round(
 																predict.data.prix_total_estime,
@@ -472,14 +472,14 @@ function PredictComponent() {
 																mass: 1.2,
 															}}
 														/>
-														<span className="ml-1 text-muted-foreground text-sm">
+														<span className="text-muted-foreground ml-1 text-sm">
 															EUR
 														</span>
 													</p>
 												</div>
-												<div className="flex items-center gap-1.5 rounded-md bg-muted/60 px-2.5 py-1">
-													<Maximize2 className="size-3 text-muted-foreground" />
-													<span className="font-mono text-[11px] text-muted-foreground tabular-nums">
+												<div className="bg-muted/60 flex items-center gap-1.5 rounded-md px-2.5 py-1">
+													<Maximize2 className="text-muted-foreground size-3" />
+													<span className="text-muted-foreground font-mono text-[11px] tabular-nums">
 														{Number(surface)} m²
 													</span>
 												</div>
@@ -502,7 +502,7 @@ function PredictComponent() {
 											<ConfidenceBar score={predict.data.score_confiance} />
 											{predict.data.confidence_method && (
 												<div className="mt-3">
-													<span className="inline-flex items-center rounded-md border border-border/60 bg-muted/40 px-2 py-0.5 font-mono text-[10px] text-muted-foreground">
+													<span className="border-border/60 bg-muted/40 text-muted-foreground inline-flex items-center rounded-md border px-2 py-0.5 font-mono text-[10px]">
 														{formatMethodName(predict.data.confidence_method)}
 													</span>
 												</div>
@@ -537,7 +537,7 @@ function PredictComponent() {
 
 							{/* Meta footer */}
 							<Fade delay={320}>
-								<div className="flex flex-wrap items-center gap-x-3 gap-y-1 rounded-lg bg-muted/25 px-3.5 py-2.5 font-mono text-[10px] text-muted-foreground/50">
+								<div className="bg-muted/25 text-muted-foreground/50 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-lg px-3.5 py-2.5 font-mono text-[10px]">
 									<span>model: {predict.data.model_version}</span>
 									{predict.data.intervalle_largeur != null && (
 										<>

@@ -23,10 +23,10 @@ import {
 function Stat({ value, label }: { value: string; label: string }) {
 	return (
 		<div className="text-center">
-			<p className="font-mono font-semibold text-foreground text-xl tabular-nums tracking-tight">
+			<p className="text-foreground font-mono text-xl font-semibold tracking-tight tabular-nums">
 				{value}
 			</p>
-			<p className="mt-0.5 text-[11px] text-muted-foreground">{label}</p>
+			<p className="text-muted-foreground mt-0.5 text-[11px]">{label}</p>
 		</div>
 	);
 }
@@ -45,14 +45,14 @@ function MetricRow({
 }) {
 	return (
 		<div
-			className={`grid grid-cols-[1fr_auto_auto] items-center gap-4 rounded-lg px-3 py-2.5 ${highlight ? "bg-primary/6 ring-1 ring-primary/15" : "bg-muted/30"}`}
+			className={`grid grid-cols-[1fr_auto_auto] items-center gap-4 rounded-lg px-3 py-2.5 ${highlight ? "bg-primary/6 ring-primary/15 ring-1" : "bg-muted/30"}`}
 		>
-			<span className="font-medium text-xs">{name}</span>
-			<span className="font-mono text-muted-foreground text-xs tabular-nums">
+			<span className="text-xs font-medium">{name}</span>
+			<span className="text-muted-foreground font-mono text-xs tabular-nums">
 				{rmse}
 			</span>
 			<span
-				className={`font-mono text-xs tabular-nums ${highlight ? "font-semibold text-primary" : "text-muted-foreground"}`}
+				className={`font-mono text-xs tabular-nums ${highlight ? "text-primary font-semibold" : "text-muted-foreground"}`}
 			>
 				{mae}
 			</span>
@@ -75,14 +75,14 @@ function PipelineStep({
 	return (
 		<div className="flex gap-3">
 			<div className="flex flex-col items-center">
-				<div className="flex size-7 shrink-0 items-center justify-center rounded-full bg-primary/10 font-mono font-semibold text-[11px] text-primary">
+				<div className="bg-primary/10 text-primary flex size-7 shrink-0 items-center justify-center rounded-full font-mono text-[11px] font-semibold">
 					{step}
 				</div>
-				{!last && <div className="my-1 h-full w-px bg-border/60" />}
+				{!last && <div className="bg-border/60 my-1 h-full w-px" />}
 			</div>
 			<div className={`${last ? "" : "pb-4"}`}>
-				<p className="font-medium text-xs leading-7">{label}</p>
-				<p className="text-[11px] text-muted-foreground">{detail}</p>
+				<p className="text-xs leading-7 font-medium">{label}</p>
+				<p className="text-muted-foreground text-[11px]">{detail}</p>
 			</div>
 		</div>
 	);
@@ -117,11 +117,11 @@ function ConfidenceRow({
    ══════════════════════════════════════════════════════ */
 export function MethodologySection() {
 	return (
-		<section className="mt-16 border-border/40 border-t pt-12">
+		<section className="border-border/40 mt-16 border-t pt-12">
 			{/* Section header */}
 			<Fade>
 				<div className="mb-10 max-w-lg">
-					<p className="mb-2 flex items-center gap-2 font-medium text-primary text-xs uppercase tracking-widest">
+					<p className="text-primary mb-2 flex items-center gap-2 text-xs font-medium tracking-widest uppercase">
 						<FlaskConical className="size-3.5" />
 						Methodologie
 					</p>
@@ -129,7 +129,7 @@ export function MethodologySection() {
 						Comment fonctionne{" "}
 						<span className="text-primary italic">la prediction</span>
 					</h2>
-					<p className="mt-2 text-muted-foreground text-sm">
+					<p className="text-muted-foreground mt-2 text-sm">
 						Notre modele s'appuie sur les donnees DVF (Demande de Valeurs
 						Foncieres), un jeu de donnees public de transactions immobilieres en
 						France.
@@ -144,7 +144,7 @@ export function MethodologySection() {
 						<Card className="h-full">
 							<CardHeader className="pb-3">
 								<CardTitle className="flex items-center gap-2 text-sm">
-									<Database className="size-3.5 text-primary" />
+									<Database className="text-primary size-3.5" />
 									Dataset DVF
 								</CardTitle>
 								<CardDescription>
@@ -152,31 +152,31 @@ export function MethodologySection() {
 								</CardDescription>
 							</CardHeader>
 							<CardContent className="space-y-5">
-								<div className="grid grid-cols-3 gap-2 rounded-lg bg-muted/30 px-4 py-4">
+								<div className="bg-muted/30 grid grid-cols-3 gap-2 rounded-lg px-4 py-4">
 									<Stat value="1,39M" label="Lignes brutes" />
 									<Stat value="390K" label="Apres nettoyage" />
 									<Stat value="5 830" label="Codes postaux" />
 								</div>
 
 								<div className="space-y-2">
-									<p className="font-medium text-muted-foreground text-xs">
+									<p className="text-muted-foreground text-xs font-medium">
 										Nettoyage applique
 									</p>
-									<ul className="space-y-1.5 text-[12px] text-muted-foreground">
+									<ul className="text-muted-foreground space-y-1.5 text-[12px]">
 										<li className="flex items-start gap-2">
-											<span className="mt-1.5 size-1 shrink-0 rounded-full bg-primary/60" />
+											<span className="bg-primary/60 mt-1.5 size-1 shrink-0 rounded-full" />
 											Uniquement Maisons et Appartements
 										</li>
 										<li className="flex items-start gap-2">
-											<span className="mt-1.5 size-1 shrink-0 rounded-full bg-primary/60" />
+											<span className="bg-primary/60 mt-1.5 size-1 shrink-0 rounded-full" />
 											Surface &ge; 10 m², valeur fonciere &gt; 0
 										</li>
 										<li className="flex items-start gap-2">
-											<span className="mt-1.5 size-1 shrink-0 rounded-full bg-primary/60" />
+											<span className="bg-primary/60 mt-1.5 size-1 shrink-0 rounded-full" />
 											Prix/m² filtre entre 200 et 60 000 EUR
 										</li>
 										<li className="flex items-start gap-2">
-											<span className="mt-1.5 size-1 shrink-0 rounded-full bg-primary/60" />
+											<span className="bg-primary/60 mt-1.5 size-1 shrink-0 rounded-full" />
 											Mediane finale : 2 685 EUR/m²
 										</li>
 									</ul>
@@ -192,7 +192,7 @@ export function MethodologySection() {
 						<Card className="h-full">
 							<CardHeader className="pb-3">
 								<CardTitle className="flex items-center gap-2 text-sm">
-									<Layers className="size-3.5 text-primary" />
+									<Layers className="text-primary size-3.5" />
 									Target Encoding
 								</CardTitle>
 								<CardDescription>Encodage geographique retenu</CardDescription>
@@ -205,8 +205,8 @@ export function MethodologySection() {
 									one-hot en une seule variable a fort signal geographique.
 								</p>
 
-								<div className="space-y-2 rounded-lg bg-muted/30 p-3">
-									<p className="font-medium text-[11px] text-muted-foreground uppercase tracking-wider">
+								<div className="bg-muted/30 space-y-2 rounded-lg p-3">
+									<p className="text-muted-foreground text-[11px] font-medium tracking-wider uppercase">
 										Parametres
 									</p>
 									<div className="grid grid-cols-2 gap-y-2 font-mono text-xs">
@@ -219,8 +219,8 @@ export function MethodologySection() {
 									</div>
 								</div>
 
-								<div className="flex items-center gap-2 rounded-md bg-primary/6 px-3 py-2 ring-1 ring-primary/15">
-									<ArrowDown className="size-3.5 text-primary" />
+								<div className="bg-primary/6 ring-primary/15 flex items-center gap-2 rounded-md px-3 py-2 ring-1">
+									<ArrowDown className="text-primary size-3.5" />
 									<span className="text-primary text-xs">
 										MAE amelioree de ~2 150 a ~1 700 EUR/m²
 									</span>
@@ -236,7 +236,7 @@ export function MethodologySection() {
 						<Card className="h-full">
 							<CardHeader className="pb-3">
 								<CardTitle className="flex items-center gap-2 text-sm">
-									<BrainCircuit className="size-3.5 text-primary" />
+									<BrainCircuit className="text-primary size-3.5" />
 									Modeles compares
 								</CardTitle>
 								<CardDescription>
@@ -246,13 +246,13 @@ export function MethodologySection() {
 							<CardContent className="space-y-3">
 								{/* Header */}
 								<div className="grid grid-cols-[1fr_auto_auto] gap-4 px-3 pb-1">
-									<span className="text-[10px] text-muted-foreground uppercase tracking-wider">
+									<span className="text-muted-foreground text-[10px] tracking-wider uppercase">
 										Modele
 									</span>
-									<span className="text-[10px] text-muted-foreground uppercase tracking-wider">
+									<span className="text-muted-foreground text-[10px] tracking-wider uppercase">
 										RMSE
 									</span>
-									<span className="text-[10px] text-muted-foreground uppercase tracking-wider">
+									<span className="text-muted-foreground text-[10px] tracking-wider uppercase">
 										MAE
 									</span>
 								</div>
@@ -262,7 +262,7 @@ export function MethodologySection() {
 									<MetricRow name="HGB (One-Hot)" rmse={4075} mae={2014} />
 									<MetricRow name="RF (Departement)" rmse={4201} mae={2012} />
 									<MetricRow name="HGB (Departement)" rmse={4217} mae={1969} />
-									<div className="my-2 h-px bg-border/50" />
+									<div className="bg-border/50 my-2 h-px" />
 									<MetricRow
 										name="RF + TE (v1_rf_te)"
 										rmse={3737}
@@ -277,10 +277,10 @@ export function MethodologySection() {
 								</div>
 
 								<div className="flex items-center gap-2 pt-1">
-									<GitBranch className="size-3 text-primary" />
-									<span className="text-[11px] text-muted-foreground">
+									<GitBranch className="text-primary size-3" />
+									<span className="text-muted-foreground text-[11px]">
 										Meilleure precision brute :{" "}
-										<span className="font-medium text-foreground">
+										<span className="text-foreground font-medium">
 											RandomForest + TE
 										</span>
 									</span>
@@ -296,7 +296,7 @@ export function MethodologySection() {
 						<Card className="h-full">
 							<CardHeader className="pb-3">
 								<CardTitle className="flex items-center gap-2 text-sm">
-									<ShieldCheck className="size-3.5 text-primary" />
+									<ShieldCheck className="text-primary size-3.5" />
 									Score de confiance
 								</CardTitle>
 								<CardDescription>
@@ -305,34 +305,34 @@ export function MethodologySection() {
 							</CardHeader>
 							<CardContent className="space-y-4">
 								<div className="grid gap-3 sm:grid-cols-2">
-									<div className="space-y-1.5 rounded-lg bg-muted/30 p-3">
-										<p className="font-medium text-[11px] text-muted-foreground uppercase tracking-wider">
+									<div className="bg-muted/30 space-y-1.5 rounded-lg p-3">
+										<p className="text-muted-foreground text-[11px] font-medium tracking-wider uppercase">
 											RandomForest
 										</p>
-										<p className="text-[12px] text-muted-foreground leading-relaxed">
+										<p className="text-muted-foreground text-[12px] leading-relaxed">
 											Predictions de tous les arbres, percentiles q10/q90 de la
 											distribution.
 										</p>
-										<p className="font-mono text-[10px] text-primary/70">
+										<p className="text-primary/70 font-mono text-[10px]">
 											rf_tree_quantile_width
 										</p>
 									</div>
-									<div className="space-y-1.5 rounded-lg bg-muted/30 p-3">
-										<p className="font-medium text-[11px] text-muted-foreground uppercase tracking-wider">
+									<div className="bg-muted/30 space-y-1.5 rounded-lg p-3">
+										<p className="text-muted-foreground text-[11px] font-medium tracking-wider uppercase">
 											HGB Bootstrap
 										</p>
-										<p className="text-[12px] text-muted-foreground leading-relaxed">
+										<p className="text-muted-foreground text-[12px] leading-relaxed">
 											10 modeles sur echantillons bootstrap, dispersion des
 											predictions.
 										</p>
-										<p className="font-mono text-[10px] text-primary/70">
+										<p className="text-primary/70 font-mono text-[10px]">
 											hgb_bootstrap_width
 										</p>
 									</div>
 								</div>
 
 								<div className="space-y-0.5">
-									<p className="mb-2 font-medium text-[11px] text-muted-foreground uppercase tracking-wider">
+									<p className="text-muted-foreground mb-2 text-[11px] font-medium tracking-wider uppercase">
 										Interpretation
 									</p>
 									<ConfidenceRow
@@ -368,7 +368,7 @@ export function MethodologySection() {
 					<Card className="mt-5">
 						<CardHeader className="pb-3">
 							<CardTitle className="flex items-center gap-2 text-sm">
-								<Workflow className="size-3.5 text-primary" />
+								<Workflow className="text-primary size-3.5" />
 								Pipeline de prediction
 							</CardTitle>
 							<CardDescription>

@@ -53,6 +53,11 @@
 			"matchPackageNames": ["/^@types//"]
 		},
 		{
+			"description": "Stay on Node 24 (runtime + types)",
+			"matchPackageNames": ["node", "@types/node"],
+			"allowedVersions": "<25"
+		},
+		{
 			"groupName": "tRPC",
 			"groupSlug": "trpc",
 			"addLabels": ["scope:shared"],

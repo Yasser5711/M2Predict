@@ -61,7 +61,7 @@ export const Route = createRootRouteWithContext<RouterAppContext>()({
 function NotFound() {
 	return (
 		<div className="flex h-full flex-col items-center justify-center gap-6 text-center">
-			<p className="font-display text-8xl text-muted-foreground/20 italic">
+			<p className="font-display text-muted-foreground/20 text-8xl italic">
 				404
 			</p>
 			<p className="text-muted-foreground text-sm">Page introuvable</p>
@@ -81,8 +81,8 @@ function RootError({ error }: { error: unknown }) {
 
 	return (
 		<div className="flex h-full flex-col items-center justify-center gap-6 text-center">
-			<p className="font-display text-5xl text-destructive/40 italic">Erreur</p>
-			<p className="max-w-md text-muted-foreground text-xs">{message}</p>
+			<p className="font-display text-destructive/40 text-5xl italic">Erreur</p>
+			<p className="text-muted-foreground max-w-md text-xs">{message}</p>
 			<Link
 				to="/"
 				className={buttonVariants({ variant: "outline", size: "sm" })}

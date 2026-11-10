@@ -31,9 +31,9 @@ export function SiteFooter({
 		}) ?? "--:--:--";
 
 	return (
-		<footer className="mt-10 rounded-2xl border border-border/60 bg-card/50 px-4 py-4">
-			<div className="flex flex-col gap-3 text-muted-foreground text-sm sm:flex-row sm:items-center sm:justify-between">
-				<div className="inline-flex items-center gap-2 rounded-full border border-border/70 bg-muted/30 px-3 py-1.5">
+		<footer className="border-border/60 bg-card/50 mt-10 rounded-2xl border px-4 py-4">
+			<div className="text-muted-foreground flex flex-col gap-3 text-sm sm:flex-row sm:items-center sm:justify-between">
+				<div className="border-border/70 bg-muted/30 inline-flex items-center gap-2 rounded-full border px-3 py-1.5">
 					<Clock3 className="size-4" />
 					<span className="font-mono tabular-nums">{currentHour}</span>
 					<span>|</span>
@@ -45,7 +45,7 @@ export function SiteFooter({
 						href={portfolioUrl}
 						target="_blank"
 						rel="noreferrer"
-						className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
+						className="hover:text-foreground inline-flex items-center gap-1.5 transition-colors"
 					>
 						<Globe className="size-4" />
 						Portfolio
@@ -54,7 +54,7 @@ export function SiteFooter({
 						href={githubRepoUrl}
 						target="_blank"
 						rel="noreferrer"
-						className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
+						className="hover:text-foreground inline-flex items-center gap-1.5 transition-colors"
 					>
 						<Github className="size-4" />
 						GitHub Repo
@@ -63,7 +63,7 @@ export function SiteFooter({
 						href={huggingFaceUrl}
 						target="_blank"
 						rel="noreferrer"
-						className="inline-flex items-center gap-1.5 transition-colors hover:text-foreground"
+						className="hover:text-foreground inline-flex items-center gap-1.5 transition-colors"
 					>
 						<HuggingFace className="size-4" />
 						Hugging Face

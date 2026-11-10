@@ -36,7 +36,7 @@ jobs:
       - name: 🧰 Setup Node + pnpm
         uses: ./.github/actions/setup
         with:
-          node-version: "20"
+          node-version: "24.22.1"
           cache-dependency-path: pnpm-lock.yaml
 
       - name: 📥 Install dependencies
@@ -75,7 +75,7 @@ jobs:
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "24.22.1"
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
       - run: pnpm install --frozen-lockfile
@@ -108,7 +108,7 @@ jobs:
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: "24.22.1"
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
 

@@ -13,15 +13,15 @@ export default function Header() {
 
 	return (
 		<header
-			className="sticky top-0 z-50 border-border/40 border-b bg-card/60 backdrop-blur-2xl"
+			className="border-border/40 bg-card/60 sticky top-0 z-50 border-b backdrop-blur-2xl"
 			style={{ WebkitBackdropFilter: "blur(24px) saturate(1.5)" }}
 		>
 			<div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3">
 				<div className="flex items-baseline gap-1.5">
 					<span className="font-display text-lg tracking-tight">
-						M<sup className="font-sans text-[0.55em] text-primary">2</sup>
+						M<sup className="text-primary font-sans text-[0.55em]">2</sup>
 					</span>
-					<span className="font-display text-lg italic tracking-tight">
+					<span className="font-display text-lg tracking-tight italic">
 						Predict
 					</span>
 				</div>
@@ -29,7 +29,7 @@ export default function Header() {
 				<button
 					type="button"
 					onClick={() => setTheme(isDark ? "light" : "dark")}
-					className="relative flex size-8 items-center justify-center rounded-lg text-muted-foreground transition-all hover:bg-muted hover:text-foreground"
+					className="text-muted-foreground hover:bg-muted hover:text-foreground relative flex size-8 items-center justify-center rounded-lg transition-all"
 				>
 					{mounted ? (
 						<AnimatePresence mode="wait" initial={false}>
