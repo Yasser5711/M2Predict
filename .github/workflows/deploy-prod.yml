@@ -20,7 +20,7 @@ jobs:
       - name: 🧰 Setup Node + pnpm + caches
         uses: ./.github/actions/setup
         with:
-          node-version: "20"
+          node-version: "24.22.1"
           cache-dependency-path: pnpm-lock.yaml
 
       - name: 📥 Install deps

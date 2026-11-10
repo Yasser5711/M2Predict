@@ -1,0 +1,41 @@
+# Build context for the root `Dockerfile` (the web app). It builds from the
+# REPOSITORY ROOT so pnpm can resolve `workspace:*`; everything not excluded
+# here is uploaded to the builder on every deploy.
+#
+# Keep every package.json and pnpm-lock.yaml: `pnpm install --frozen-lockfile`
+# compares the lockfile against every workspace member's manifest.
+
+**/node_modules
+
+# Build output and caches
+**/.output
+**/.nitro
+**/.tanstack
+**/.vinxi
+**/.turbo
+**/dist
+**/coverage
+**/.cache
+**/*.tsbuildinfo
+
+# The Python model API ships its own image (apps/ml/Dockerfile). Its
+# package.json stays for the frozen lockfile.
+apps/ml/*
+!apps/ml/package.json
+
+# Repo metadata, CI, deployment
+.git
+.github
+.vscode
+.idea
+.vercel
+.claude
+
+# Local secrets, recursive: a nested apps/web/.env must never reach the image.
+**/.env
+**/.env.*
+
+# OS noise and logs
+.DS_Store
+Thumbs.db
+*.log

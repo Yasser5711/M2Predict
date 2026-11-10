@@ -27,11 +27,14 @@
 	},
 	"devDependencies": {
 		"@M2Predict/config": "workspace:*",
-		"@biomejs/biome": "^2.5.15",
+		"@biomejs/biome": "^2.6.6",
 		"@types/node": "catalog:",
-		"turbo": "^2.11.6",
+		"turbo": "^2.11.10",
 		"typescript": "catalog:"
 	},
 	"packageManager": "pnpm@10.34.6",
+	"engines": {
+		"node": "24.x"
+	},
 	"version": "1.0.0"
 }

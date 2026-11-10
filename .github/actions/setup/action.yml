@@ -5,7 +5,7 @@ inputs:
   node-version:
     description: Node.js version
     required: false
-    default: "20"
+    default: "24.22.1"
 
   cache-dependency-path:
     description: Lockfile path(s) for setup-node pnpm cache

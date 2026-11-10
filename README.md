@@ -257,6 +257,23 @@ Input :
 
 ---
 
+# 🐳 Déploiement (app web)
+
+Node **24.22.1**. Image construite depuis la racine du dépôt :
+
+```bash
+docker build -t m2predict-web .
+docker run -p 3000:3000 \
+  -e DATABASE_URL=... -e BETTER_AUTH_SECRET=... \
+  -e BETTER_AUTH_URL=https://... -e CORS_ORIGIN=https://... \
+  -e ML_API_URL=https://... -e ML_API_KEY=... \
+  m2predict-web
+```
+
+L'API ML a sa propre image (`apps/ml/Dockerfile`). Les migrations restent une étape de déploiement : `pnpm db:migrate`.
+
+---
+
 # 🚀 État actuel
 
 🥇 Meilleur MAE : **RF + Target Encoding**
