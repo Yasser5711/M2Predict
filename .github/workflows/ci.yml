@@ -75,7 +75,7 @@ jobs:
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: "24.22.1"
+          node-version: "24.22.3"
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
       - run: pnpm install --frozen-lockfile
@@ -108,7 +108,7 @@ jobs:
       - uses: pnpm/action-setup@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: "24.22.1"
+          node-version: "24.22.3"
           cache: pnpm
           cache-dependency-path: pnpm-lock.yaml
 
